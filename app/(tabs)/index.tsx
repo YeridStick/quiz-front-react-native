@@ -8,11 +8,13 @@ import { ThemedView } from "@/components/ThemedView";
 import { fetchQuizzes, uploadQuiz } from "../services/quiz-services";
 import { Quiz } from "../types/quiz";
 import ModalQuizForm from "@/components/ModalQuizForm";
+import { useRouter } from "expo-router";
 
 export default function HomeScreen() {
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
   const [isTeacher, setIsTeacher] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const router = useRouter();
 
   const checkUserRole = useCallback(async () => {
     try {
@@ -41,21 +43,23 @@ export default function HomeScreen() {
   );
 
   const renderQuizCard = ({ item }: { item: Quiz }) => (
-    <ThemedView style={styles.quizCard}>
-      <ThemedText type="subtitle" style={styles.quizTitle} numberOfLines={2}>
-        {item.titulo}
-      </ThemedText>
-      <ThemedText style={styles.quizDescription} numberOfLines={3}>
-        {item.descripcion}
-      </ThemedText>
-      <ThemedText
-        type="defaultSemiBold"
-        style={styles.quizCreator}
-        numberOfLines={1}
-      >
-        Creator: {item.creadorId ?? "Not specified"}
-      </ThemedText>
-    </ThemedView>
+    <TouchableOpacity onPress={() => router.push(`../explore/${item.id}`)}>
+      <ThemedView style={styles.quizCard}>
+        <ThemedText type="subtitle" style={styles.quizTitle} numberOfLines={2}>
+          {item.titulo}
+        </ThemedText>
+        <ThemedText style={styles.quizDescription} numberOfLines={3}>
+          {item.descripcion}
+        </ThemedText>
+        <ThemedText
+          type="defaultSemiBold"
+          style={styles.quizCreator}
+          numberOfLines={1}
+        >
+          Creator: {item.creadorId ?? "Not specified"}
+        </ThemedText>
+      </ThemedView>
+    </TouchableOpacity>
   );
 
   const handleUploadQuiz = async (

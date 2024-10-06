@@ -41,3 +41,35 @@ export const uploadQuiz = async (
     throw error;
   }
 };
+
+export const startQuiz = async (quizId: string, nombreUsuario: string) => {
+  try {
+    const response = await axios.post(
+      `${API_URL}/quizzes/iniciar/${quizId}?nombreUsuario=${encodeURIComponent(
+        nombreUsuario
+      )}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error starting quiz:", error);
+    throw error;
+  }
+};
+
+export const answerQuestion = async (
+  quizId: string,
+  nombreUsuario: string,
+  respuestaIndex: number
+) => {
+  try {
+    const response = await axios.post(
+      `${API_URL}/quizzes/${quizId}/responder?nombreUsuario=${encodeURIComponent(
+        nombreUsuario
+      )}&respuestaIndex=${respuestaIndex}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error answering question:", error);
+    throw error;
+  }
+};
